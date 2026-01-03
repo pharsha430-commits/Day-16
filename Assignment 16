@@ -1,15 +1,11 @@
 Navigate to https://www.hyrtutorials.com/p/waits-demo.html. Write a program to click "Add Textbox1" and check that the button got disabled or not after 5secs.
+
 package selepractice;
 
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import java.time.Duration;
-import java.util.NoSuchElementException;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -30,32 +26,44 @@ public class Synchronization_buttonDisable {
 		button1 = driver.findElement(By.id("btn1"));
 		button1.click();
 		
+		//To print the text
+		System.out.println("Clicked Text Box1");
 		
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-		
-		FluentWait <WebDriver> wait = new FluentWait<>(driver)
-				.withTimeout(Duration.ofSeconds(10))
-				.pollingEvery(Duration.ofSeconds(2))
-				.ignoring(NoSuchElementException.class);
-		
-		
-		}
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
+		
+		boolean isDisabled = wait.until(new ExpectedCondition <Boolean> () {
+			public Boolean apply (WebDriver driver) {
+				return !driver.findElement(By.id(id)).isEnabled();
+			}	
+		});
+		
+		if (isDisabled) {
+            System.out.println("Button became disabled within 5 seconds.");
+        } else {
+            System.out.println("Button did NOT become disabled within 5 seconds.");
+        }
+		}
 }
 
 Explain the difference between Wait and Thread.sleep()
-The wait and Thread.sleep() methods, commonly found in multi-threaded programming environments like Java, serve to pause thread execution but differ significantly in their purpose and behavior, particularly concerning monitor locks and inter-thread communication.
-Thread.sleep() -
-Purpose:  Pauses the execution of the current thread for a specified duration.
-Monitor Locks:  Does not release any monitor locks held by the thread.  The thread retains ownership of any acquired locks.
-Context:  Can be called from any ;part of the code, not necessarily within a synchronized block.
-Resumption:  The thread automatically wakes up and becomes runnable after the specified sleep duration.  It can also be interrupted.
-Usage:  Used for intrducing simple, timed delays in a thread's execution.
-Wait() -
-Purpose:  Causes the current thread to wait until another thread explicitly notifies it (using notify() or notifyAll()) or until a specified timeout expires.
-Monitor Locks:  Releases the monitor lock on the object it is called upon.  This allows other threads to acquire the lock and potentially modify the shared resource.
-Context:  be called withing a synchronixed block, as it operates on the object's monitor.
-Resumption:  The thread resumes exectuion when it recevies a notify() or notifyAll() call for the object it's waiting on, or if the timeout expires, and it can reacquire the monitor lock.  It can also be interrupted.
-Usage:  Primarily used for inter-thread communication and synchronization, where one thread needs to wait for a condition to be met by another thread.
+Both wait() and Thread.sleep() are used to pause the execution of a thread, but they are used for different purposes and behave differently.
+1. Definition-
+- wait() is a method of the object class and is used for inter-thread communication.
+- Thread.sleep() is a method the Thread class and is used to pause a thread for a fixed time.
+2. Lock Handling-
+- wait() releases the lock(monito) on the object when it is called.
+- Thread.sleep() does not release any lock the thread is holding.
+3. Usage context-
+- wait() must be called inside  synchronized block or method.
+- Thread.sleep() can be called from anywhere and does not require synchronization.
+4. Waking up the Thread-
+- A thread in wait() state is awakened by calling notify() or notifyAll() on the same object.
+- A thread in Thread.sleep() wakes up automatically after the specified time.
+5. Purpose-
+- wait() is used when threads need to communicate or coordinate with each other.
+- Thread.sleep() is mainly used to introduce a delay in execution.
+6. Exceptions-
+- Both methods throw InterruptedException, which must be handled using try–catch or declared with throws.
 
 	
