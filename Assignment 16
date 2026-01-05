@@ -47,23 +47,40 @@ public class Synchronization_buttonDisable {
 }
 
 Explain the difference between Wait and Thread.sleep()
-Both wait() and Thread.sleep() are used to pause the execution of a thread, but they are used for different purposes and behave differently.
-1. Definition-
-- wait() is a method of the object class and is used for inter-thread communication.
-- Thread.sleep() is a method the Thread class and is used to pause a thread for a fixed time.
-2. Lock Handling-
-- wait() releases the lock(monito) on the object when it is called.
-- Thread.sleep() does not release any lock the thread is holding.
-3. Usage context-
-- wait() must be called inside  synchronized block or method.
-- Thread.sleep() can be called from anywhere and does not require synchronization.
-4. Waking up the Thread-
-- A thread in wait() state is awakened by calling notify() or notifyAll() on the same object.
-- A thread in Thread.sleep() wakes up automatically after the specified time.
-5. Purpose-
-- wait() is used when threads need to communicate or coordinate with each other.
-- Thread.sleep() is mainly used to introduce a delay in execution.
-6. Exceptions-
-- Both methods throw InterruptedException, which must be handled using try–catch or declared with throws.
+|   Aspect           |            Wait                                                         |         Thread.sleep()                                 |
+| ------------------ | ------------------------------------------------------------------------| ------------------------------------------------------ |
+| Definition         | Selenium Wait is used to pause execution until a condition is satisfied | `Thread.sleep()` pauses execution for a   fixed time   |
+|                    |									     								   |														|
+| Type               | Dynamic wait                                                            | Static wait                                            |
+| 		  		     |									   								       |														|
+| Condition based    | Yes, it waits for specific conditions                                   | No, it does not check any condition                    |
+| 		  		     |									   								       |				 										|
+| Waiting time       | Waits only until the condition is met                                   | Waits for the full specified time                      |
+| 			         |									     							       |														|
+| Performance        | Faster and efficient                                                    | Slower and inefficient                                 |
+|		 		     |									      								   |														|
+| Reliability        | More reliable for automation                                            | Less reliable                                          |
+| 		  		     |									    							       |														|
+| Exception handling | Runtime exceptions                                                      | Checked exception (`InterruptedException`)             |
+| 		 		     |									       								   |														|
+| Usage              | Recommended in Selenium automation                                      | Not recommended in Selenium                            |
+| 				     |									      								   |														|
+| Flexibility        | High                                                                    | Low                                                    |
+| 		 		     |									  								       |														|
+| Best practice      | Use Explicit or Fluent Wait                                             | Avoid using in real-time projects                      |
 
-	
+
+Selenium Wait() -
+- Selenium wait is used to handle synchronization issues in web applications.
+- It waits dynamically until a web element becomes visible, clickable, or present.
+- Selenium provieds implicit wait, explicit wait and fluent wait.
+- It improves script reliability and reduces unnecessary delays.
+- Selenium wait is highly recommended in real-time automation testing.
+
+Thread.sleep() -
+- Thread.sleep() is a java method used to pause program execution for a fixed time.
+- It does not depend pn element availability.
+- Even if the element loads early, the program still waits.,
+- It makes automation scripts slow and unstable.
+
+
